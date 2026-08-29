@@ -1,0 +1,94 @@
+-The exercise directories will be named this way: ex00, ex01, ..., exn
+
+-Since C++ is a complex language, and in order to keep things simple, the code will
+follow the C++98 standard so:
+• Compile your code with c++ and the flags -Wall -Wextra -Werror
+• Your code should still compile if you add the flag -std=c++98
+
+-Name your files, classes, functions, member functions and attributes as required in the guidelines.
+
+-Write class names in UpperCamelCase format. Files containing class code will always be named according to the class name.
+For instance:ClassName.hpp/ClassName.h, ClassName.cpp, or ClassName.tpp. 
+Then, if -you have a header file containing the definition of a class "BrickWall" standing for a brick wall, its name will be BrickWall.hpp.
+
+-Unless specified otherwise, every output message must end with a newline character and be displayed to the standard output.
+
+-No coding style is enforced in the C++ modules. You can follow your favorite one. But keep in mind that code any reader can’t understand is inacceptable code.
+Do your best to write clean and readable code.
+
+-You are allowed to use almost everything from the standard library.
+Thus, instead of sticking to what you already know, it would be smart to use the C++-ish versions of the C functions you are used to as much as possible.
+
+-However, you can’t use any other external library. It means C++11 (and derived forms) and Boost libraries are forbidden.
+The following functions are forbidden too: *printf(), *alloc() and free(). If you use them the solution will be inacceptable.
+
+-Note that unless explicitly stated otherwise, the using namespace <ns_name> and friend keywords are forbidden. Otherwise the solution will be inacceptable
+
+-For now Use of the STL is forbidden That means: no Containers (vector/list/map, and so forth)
+and no Algorithms (anything that requires including the <algorithm> header) until then.
+Otherwise the solution will be inacceptable
+
+-Any function implementation put in a header file (except for function templates) means the solution is inacceptable
+
+-You should be able to use each of your headers independently from others.
+Thus, they must include all the dependencies they need.
+However, you must avoid the problem of double inclusion by adding include guards.
+Otherwise, your solution will be inacceptable
+
+-You can add some additional files if you need to (i.e., to split your code for organizing purposes).
+
+-following rules apply to the Makefiles:
+• The $(NAME), clean, fclean, re and all rules are mandatory. The all rule must be
+the default one and executed when typing just make.
+• If the makefile relinks when not necessary, your solution will be considered non-
+functional.
+• In the case of a multibinary project, in addition to the above rules, you must have
+a rule for each binary (eg: $(NAME_1), $(NAME_2), ...). The “all” rule will
+compile all the binaries, using each binary rule.
+• In the case of my request that calls a function from a non-system library (e.g.: libft)
+that exists along your source code, your makefile must compile this library auto-
+matically.
+• All source files needed to compile your project must be explicitly named in your
+Makefile. Eg: no “*.c”, no “*.o” , etc ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
