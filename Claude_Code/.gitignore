@@ -1,0 +1,8 @@
+# Compiled binaries and debug artifacts — not portable across machines,
+# always rebuild from source instead.
+a.out
+*.o
+*_dbg
+core
+core_demo
+core.[0-9]*
