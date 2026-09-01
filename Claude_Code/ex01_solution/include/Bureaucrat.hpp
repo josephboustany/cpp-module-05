@@ -5,6 +5,17 @@
 #include <exception>
 #include <ostream>
 
+/*
+** Form.cpp needs a complete Bureaucrat (it calls bureaucrat.getGrade()
+** inside beSigned()), so Form.cpp includes Bureaucrat.hpp fully.
+** This header only needs to know that "Form" is a type -- signForm() takes
+** it by reference, and a reference to an incomplete type is fine as long as
+** nothing here dereferences it. So a forward declaration is enough here,
+** breaking the circular #include that would otherwise happen if both
+** headers tried to fully include each other.
+*/
+class Form;
+
 class Bureaucrat
 {
 	public:
@@ -29,22 +40,17 @@ class Bureaucrat
 		void incrementGrade();
 		void decrementGrade();
 
-		//public in ": public std.." is not about who can access the class.
-		//It's about what happens to the base class's members inside the derived class.
-		//we must  use here public.otherwise 2 things break:e.what() in main.cpp would not compile because
-		//With private inheritance, what() becomes private in your class — outside code can't call it.
-		//The only practical consequence of nesting is the qualification requirement:
-		//-Inside Bureaucrat's own member functions (constructor, incrementGrade()...)→ short name works: throw GradeTooHighException();
-		//- Anywhere outside the class (in main(), in a catch block, in another class) → you must write the full path: Bureaucrat::GradeTooHighException
+		/*
+		** Attempts to have this Bureaucrat sign the given Form. Takes the
+		** Form by reference (not by pointer): the caller keeps ownership,
+		** this function only borrows it to call its beSigned() method.
+		*/
+		void signForm(Form& form);
+
 		class GradeTooHighException : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();
-				//when we say throw(), we mean This function doesn't call new,
-				//doesn't construct a std::string, doesn't do anything that 
-				//could fail and raise an exception. So it can honestly promise 
-				//throw() — "I guarantee I will never throw," full stop.
-				//It's not accepting or rejecting anything; it just never has a reason to throw in the first place.
 		};
 
 		class GradeTooLowException : public std::exception

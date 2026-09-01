@@ -4,6 +4,11 @@
 const int Bureaucrat::_gradeMin = 1;
 const int Bureaucrat::_gradeMax = 150;
 
+Bureaucrat::Bureaucrat() : _name(""), _grade(_gradeMax)
+{
+	std::cout << _name << ", bureaucrat grade " << _grade << ", created.\n";
+}
+
 Bureaucrat::Bureaucrat(std::string const& name, int grade) : _name(name), _grade(grade)
 {
 	/*
