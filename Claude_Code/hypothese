@@ -1,0 +1,25 @@
+std::string _name;
+bool is_signed;
+const int _gradeToSign;
+const int _gradeToExec;
+
+following exceptions will be thrown if a form's grade is out of bounds:
+
+Form::GradeTooHighException
+Form::GradeTooLowException
+
+getters for all attributes
+
+overload the insertion << operator to print all the form's information
+
+beSigned(const Bureaucrat& bureaucrat) member function
+
+
+signForm() member function in Bureaucrat class to call Form::beSigned() which will attempt to sign the form,
+if the form is signed successfully, it will print something like:
+
+<bureaucrat> signed <form>
+
+or
+
+<bureaucrat> couldn't sign <form> because <reason>  
