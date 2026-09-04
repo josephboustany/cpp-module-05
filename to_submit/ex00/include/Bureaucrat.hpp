@@ -5,15 +5,13 @@
 #include <exception>
 #include <ostream>
 
-class Form;
-
 class Bureaucrat
 {
 	public:
 		/*
-		** No default constructor: a Bureaucrat cannot exist without a name
-		** and a valid grade, so there is no sensible "empty" state for it.
-		** Only the parameterized constructor below is provided.
+		** Default constructor: uses hardcoded, already-known-valid values
+		** (no caller input, so no need to re-run the grade validation that
+		** the parameterized constructor below performs).
 		*/
 		Bureaucrat();
 		Bureaucrat(std::string const& name, int grade);
@@ -30,7 +28,6 @@ class Bureaucrat
 
 		void incrementGrade();
 		void decrementGrade();
-		void signForm(Form& form) const;
 
 		//public in ": public std.." is not about who can access the class.
 		//It's about what happens to the base class's members inside the derived class.
