@@ -254,3 +254,74 @@ re: fclean all
     [[concrete-broken-example-teaching-style]] — default to this concrete
     promise/reality build-then-break style for any future linker/compile-mechanics
     explanation in this project, rather than a terminology-first one.
+
+- **ex01** — Form: `const std::string _name`, `bool _isSigned` (starts `false`),
+  `const int _gradeToSign`, `const int _gradeToExecute` — all private, not
+  protected. Grades follow the same `[1, 150]` convention as `Bureaucrat`
+  (1=highest, 150=lowest); `Form` has its own private
+  `static const int _gradeMin`/`_gradeMax` rather than reusing `Bureaucrat`'s,
+  since those are private to `Bureaucrat`. Full OCF including an explicit
+  default constructor (`_name("")`, `_isSigned(false)`,
+  `_gradeToSign(_gradeMax)`, `_gradeToExecute(_gradeMax)`). Nested
+  `Form::GradeTooHighException`/`GradeTooLowException`, same pattern as
+  `Bureaucrat`'s. `beSigned(Bureaucrat const&)` throws `GradeTooLowException`
+  if the bureaucrat's grade is numerically greater than (i.e. lower-ranked
+  than) `_gradeToSign`, else sets `_isSigned = true`. `operator<<` prints
+  `"<name>, form, requires grade <sign> to sign and grade <exec> to execute,
+  <signed/not signed>.\n"`. `Bureaucrat` gained `signForm(Form&) const`,
+  which wraps `form.beSigned(*this)` in its own `try { ... } catch
+  (std::exception& e) { ... }`, printing `"<name> signed <form>\n"` on
+  success or `"<name> couldn't sign <form> because <reason>.\n"` on failure.
+  Circular `Form`/`Bureaucrat` header dependency resolved with forward
+  declarations (`class Bureaucrat;` in `Form.hpp`, `class Form;` in
+  `Bureaucrat.hpp`); each `.cpp` includes both headers directly since both
+  need the other's full definition to call methods on it. Binary:
+  `bureaucrat` (same as ex00, extended). Reviewed 2026-09-06 and confirmed via
+  actual compile + run (not just inspection):
+  - Makefile initially omitted `Form.cpp`/`Form.o` from `SRCS`/`OBJS` entirely
+    (no compile rule for it either) — `main.cpp`/`Bureaucrat.cpp` compiled
+    fine but the link step failed with `undefined reference to Form::...`,
+    confirmed via `make re`. Fixed by mirroring the existing `Bureaucrat.o`
+    rule. All three compile-rule dependency lines also only listed the
+    same-named header, missing the *other* header each `.cpp` actually
+    `#include`s (`main.cpp`/`Bureaucrat.cpp` both include `Form.hpp` too;
+    `Form.cpp` includes `Bureaucrat.hpp` too) — fixed by appending the
+    missing header to each of the three rules.
+  - Stale comment above `Bureaucrat`'s default ctor still claimed "No default
+    constructor" — a leftover from before the ex00 default-ctor correction
+    above — removed.
+  - `Form.cpp`'s parameterized constructor printed `", form created.\n"` (no
+    comma) while the default ctor/copy ctor/`operator=`/destructor all print
+    `", form, created.\n"` (with comma) — fixed to match.
+  - `Form::GradeTooLowException::what()` returned `" grade too low"` with a
+    stray leading space, unlike `GradeTooHighException`'s `"grade too high"`
+    — fixed.
+  - `Form::operator<<` was missing its trailing `\n` (ended `<< "."` instead
+    of `<< ".\n"`) — the subject's own general output rule ("unless specified
+    otherwise, every output message must end with a newline") applies here
+    exactly as it does to `Bureaucrat::operator<<`, since the subject gives no
+    example format for `Form`'s `operator<<` that would opt out of it. Fixed;
+    confirmed via a full program run that output no longer bled across lines.
+  - Checked against the 42 EvalHub grading checklist 2026-09-06: everything
+    passes except `main.cpp`'s test coverage — it never constructs a
+    `Bureaucrat` with an out-of-range grade, and never calls
+    `incrementGrade()`/`decrementGrade()` at all, even though both are
+    implemented correctly. Not yet fixed as of this writing — add both before
+    defense.
+  - A GDB teaching session (see [[gdb-two-terminal-tty-workflow]]) used
+    `catch throw`/`catch catch` + `bt`/`up` on debug builds of the real,
+    unmodified sources to show the exception search climbing from
+    `Form::beSigned` to `Bureaucrat::signForm`'s `catch` and stopping there
+    without ever reaching `main`. Two follow-up experiments were made
+    *directly in the real files*, at the user's explicit request, each
+    reverted immediately after (confirmed via `git diff --stat` showing zero
+    diff against the pre-experiment state): (1) commented out `signForm`'s
+    `try`/`catch` — confirmed the program then aborts (`std::terminate`/
+    `SIGABRT`) the instant the grade mismatch fires, losing buffered stdout
+    and skipping every destructor/test after that point; (2) with that catch
+    still removed, added a `try`/`catch` around the call site in `main.cpp`
+    instead — confirmed (via `bt`+`up` landing in `main`, not library
+    internals) that a catch can sit anywhere up the call chain, not only in
+    the immediate caller. No files-overview or Scratch scaffold yet;
+    `ex01_explained.md`/`ex01_defense.md` still on hold per
+    [[ex01-learn-by-trial-and-error]] until the user finishes the exercise.
