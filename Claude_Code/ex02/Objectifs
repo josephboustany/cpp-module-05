@@ -1,0 +1,29 @@
+Form->AForm abstract class and its attributes remains private and belong to the base class
+
+creation of these 3 classes:
+
+•ShrubberyCreationForm: Required grades: sign 145, exec 137
+Creates a file <target>_shrubbery in the working directory and writes ASCII trees
+inside it.
+
+• RobotomyRequestForm: Required grades: sign 72, exec 45
+Makes some drilling noises, then informs that <target> has been robotomized
+successfully 50% of the time. Otherwise, it informs that the robotomy failed.
+
+• PresidentialPardonForm: Required grades: sign 25, exec 5
+Informs that <target> has been pardoned by Zaphod Beeblebrox.
+
+add the execute(Bureaucrat const & executor) const member function to the base form
+implement a function to execute the form's action in the concrete classes
+execution conditions: 
+		-form is signed
+		-grade of the bureaucrat is high enough
+		-otherwise throw an appropriate exception
+		
+free to check the requirements in every concrete class or in the base class
+call another function to execute the form
+
+add the executeForm(AForm const & form)const member function to the Bureaucrat class to execte the form, when successful print <bureaucrat> executed <form> , if not print an 
+explicit error message
+
+

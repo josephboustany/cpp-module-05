@@ -11,12 +11,7 @@ Bureaucrat::Bureaucrat() : _name(""), _grade(_gradeMax)
 
 Bureaucrat::Bureaucrat(std::string const& name, int grade) : _name(name), _grade(grade)
 {
-	/*
-	** _grade is set through the member initializer list above, then
-	** validated here. If it is out of range the object is never handed
-	** back to the caller: the exception unwinds the stack and _name
-	** (already fully constructed) is destroyed normally.
-	*/
+
 	if (grade < _gradeMin)
 		throw Bureaucrat::GradeTooHighException();
 	if (grade > _gradeMax)
@@ -33,11 +28,7 @@ Bureaucrat& Bureaucrat::operator=(Bureaucrat const& other)
 {
 	if (this != &other)
 	{
-		/*
-		** _name is const and cannot be reassigned; only _grade is copied.
-		** other._grade has already passed the range check in its own
-		** constructor, so no re-validation is needed here.
-		*/
+
 		_grade = other._grade;
 	}
 	std::cout << _name << ", bureaucrat grade " << _grade << ", assigned.\n";

@@ -1,5 +1,5 @@
-#ifndef FORM_HPP
-#define FORM_HPP
+#ifndef AFORM_HPP
+#define AFORM_HPP
 
 #include <exception>
 #include <string>
@@ -7,14 +7,14 @@
 
 class Bureaucrat;
 
-class Form
+class AForm
 {
 public:
-	Form();
-	Form(std::string const &name, int gradeToSign, int gradeToExecute);
-	Form(Form const &other);
-	Form &operator=(Form const &other);
-	~Form();
+	AForm();
+	AForm(std::string const &name, int gradeToSign, int gradeToExecute);
+	AForm(AForm const &other);
+	AForm &operator=(AForm const &other);
+	virtual ~AForm();//New
 
 	std::string const &getName() const;
 	bool getIsSigned() const;
@@ -22,6 +22,7 @@ public:
 	int getGradeToExecute() const;
 
 	void beSigned(Bureaucrat const &bureaucrat);
+	void execute(Bureaucrat const &Bureaucrat) const;//New
 
 	class GradeTooHighException : public std::exception
 	{
@@ -34,6 +35,16 @@ public:
 	public:
 		virtual const char *what() const throw();
 	};
+	//New
+	class FormNotSignedException : public std::exception
+	{
+		public:
+			virtual const char *what() const throw();
+	};
+	//Why protected and not private:Only execute() (inherited by every derived class)
+	//is meant to call it
+protected:
+	virtual void executeAction() const = 0;
 
 private:
 	const std::string _name;
@@ -45,6 +56,6 @@ private:
 	static const int _gradeMax;
 };
 
-std::ostream &operator<<(std::ostream &os, const Form &form);
+std::ostream &operator<<(std::ostream &os, const AForm &AForm);
 
 #endif
