@@ -7,6 +7,7 @@
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int main()
 {
@@ -208,6 +209,55 @@ int main()
 			boss.signForm(robot);
 			boss.executeForm(robot);
 		}
+	}
+
+	std::cout << "\n--- 15. Intern::makeForm() creates each known form type ---\n";
+	{
+		Intern someRandomIntern;
+		Bureaucrat boss("Boss", 1);
+
+		AForm *shrub = someRandomIntern.makeForm("shrubbery creation", "backyard");
+		AForm *robot = someRandomIntern.makeForm("robotomy request", "Bender");
+		AForm *pardon = someRandomIntern.makeForm("presidential pardon", "Marvin");
+
+		if (shrub)
+		{
+			std::cout << *shrub;
+			boss.signForm(*shrub);
+			boss.executeForm(*shrub);
+			delete shrub;
+		}
+		if (robot)
+		{
+			std::cout << *robot;
+			boss.signForm(*robot);
+			boss.executeForm(*robot);
+			delete robot;
+		}
+		if (pardon)
+		{
+			std::cout << *pardon;
+			boss.signForm(*pardon);
+			boss.executeForm(*pardon);
+			delete pardon;
+		}
+	}
+
+	std::cout << "\n--- 16. Intern::makeForm() with an unknown form name ---\n";
+	{
+		Intern someRandomIntern;
+		AForm *unknown = someRandomIntern.makeForm("28C form", "Bender");
+		if (unknown)
+			delete unknown;
+	}
+
+	std::cout << "\n--- 17. Intern copy constructor and copy assignment ---\n";
+	{
+		Intern original;
+		Intern copyCtor(original);
+		Intern assigned;
+		assigned = original;
+		(void)copyCtor;
 	}
 
 	std::cout << "\n--- end of main ---\n";

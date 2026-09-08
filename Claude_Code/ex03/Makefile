@@ -13,10 +13,10 @@ INCDIR  = include
 # ─── SOURCE & OBJECT FILES ────────────────────────────────────────────────────
 SRCS    = src/main.cpp     src/Bureaucrat.cpp     src/AForm.cpp \
           src/ShrubberyCreationForm.cpp     src/RobotomyRequestForm.cpp \
-          src/PresidentialPardonForm.cpp
+          src/PresidentialPardonForm.cpp     src/Intern.cpp
 OBJS    = obj/main.o       obj/Bureaucrat.o       obj/AForm.o \
           obj/ShrubberyCreationForm.o       obj/RobotomyRequestForm.o \
-          obj/PresidentialPardonForm.o
+          obj/PresidentialPardonForm.o       obj/Intern.o
 
 # ─── DEFAULT TARGET ───────────────────────────────────────────────────────────
 all: $(NAME)
@@ -26,7 +26,7 @@ $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
 
 # ─── COMPILE STEP(S) ──────────────────────────────────────────────────────────
-obj/main.o: src/main.cpp include/Bureaucrat.hpp include/AForm.hpp include/ShrubberyCreationForm.hpp include/RobotomyRequestForm.hpp include/PresidentialPardonForm.hpp
+obj/main.o: src/main.cpp include/Bureaucrat.hpp include/AForm.hpp include/ShrubberyCreationForm.hpp include/RobotomyRequestForm.hpp include/PresidentialPardonForm.hpp include/Intern.hpp
 	@mkdir -p $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c src/main.cpp -o obj/main.o
 
@@ -49,6 +49,10 @@ obj/RobotomyRequestForm.o: src/RobotomyRequestForm.cpp include/RobotomyRequestFo
 obj/PresidentialPardonForm.o: src/PresidentialPardonForm.cpp include/PresidentialPardonForm.hpp include/AForm.hpp
 	@mkdir -p $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c src/PresidentialPardonForm.cpp -o obj/PresidentialPardonForm.o
+
+obj/Intern.o: src/Intern.cpp include/Intern.hpp include/AForm.hpp include/ShrubberyCreationForm.hpp include/RobotomyRequestForm.hpp include/PresidentialPardonForm.hpp
+	@mkdir -p $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -c src/Intern.cpp -o obj/Intern.o
 
 # ─── CLEAN RULES ──────────────────────────────────────────────────────────────
 clean:
